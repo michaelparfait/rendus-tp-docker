@@ -1,0 +1,29 @@
+version: '3'
+services:
+  python-app: # dans le name pour l'application
+    build: .
+    links: 
+        - mysql-db
+    ports: 
+        - "5000:5000"
+
+  # ajout d'un service mysql
+  mysql-db:
+    image: 'mysql:5.7'
+    environment: 
+      MYSQL_ROOT_PASSWORD: password
+    volumes: 
+      - db_vol:/var/lib/mysql # volume nommé
+  
+  # ajout de l'admin pour la bdd
+  admin-db:
+    image: phpmyadmin
+    ports: 
+      - "8080:80"
+    environment: 
+        MYSQL_ROOT_PASSWORD: password
+        PMA_HOST: mysql-db
+
+# section volumes pour options
+volumes: 
+  db_vol:
